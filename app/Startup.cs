@@ -45,7 +45,6 @@ namespace desafio_docker
             }
             // app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -61,7 +60,9 @@ namespace desafio_docker
 
         public async void SeedDatabase()
         {
-            using (var connection = new MySqlConnection("Server=localhost;Database=desafio_pfa_docker;User Id=root;"))
+            
+            
+            using (var connection = Connection.GetConnection())
             {
                 await CreateDatabase(connection);
                 await SeedModules(connection);

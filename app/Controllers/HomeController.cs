@@ -29,7 +29,7 @@ namespace desafio_docker.Controllers
 
         private async Task<IEnumerable<Module>> GetModules()
         {
-            using (var connection = new MySqlConnection("Server=localhost;Database=desafio_pfa_docker;User Id=root;"))
+            using (var connection = Connection.GetConnection())
             {
                 return await connection.QueryAsync<Module>("select * from modules");
             }
