@@ -1,8 +1,30 @@
-﻿@{
+﻿@using desafio_docker.Domain
+@model IEnumerable<Module>
+@{
     ViewData["Title"] = "Home Page";
+    int counter = 0;
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="card-deck">
+        @foreach (Module module in Model)
+        {
+            if (counter != 0 && counter % 3 == 0)
+            {
+                @:</div>
+                @:<div class="card-deck">
+            }
+
+            <div class="card mb-4 w-33 @(module.Name == "Docker" ? "bg-info" : "")">
+                <div class="card-body">
+                    <h5 class="card-title">@module.Name</h5>
+                </div>
+                <div class="card-footer">
+                    <a target="_blank" href="@module.Url" class="btn btn-primary">Estudar</a>
+                </div>
+            </div>
+            counter++;
+        }
+    </div>
 </div>

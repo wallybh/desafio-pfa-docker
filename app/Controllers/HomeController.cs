@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using desafio_docker.Models;
+using desafio_docker.Domain;
+using MySql.Data.MySqlClient;
+using Dapper;
 
 namespace desafio_docker.Controllers
 {
@@ -18,9 +21,18 @@ namespace desafio_docker.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var modules = await GetModules();
+            return View(modules);
+        }
+
+        private async Task<IEnumerable<Module>> GetModules()
+        {
+            using (var connection = new MySqlConnection("Server=localhost;Database=desafio_pfa_docker;User Id=root;"))
+            {
+                return await connection.QueryAsync<Module>("select * from modules");
+            }
         }
 
         public IActionResult Privacy()

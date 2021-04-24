@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
+using Dapper.Contrib.Extensions;
+using desafio_docker.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MySql.Data.MySqlClient;
 
 namespace desafio_docker
 {
@@ -52,6 +56,48 @@ namespace desafio_docker
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            SeedDatabase();
+        }
+
+        public async void SeedDatabase()
+        {
+            using (var connection = new MySqlConnection("Server=localhost;Database=desafio_pfa_docker;User Id=root;"))
+            {
+                await CreateDatabase(connection);
+                await SeedModules(connection);
+            }
+        }
+
+        private async Task SeedModules(MySqlConnection connection)
+        {
+            var id = await connection.QueryFirstOrDefaultAsync<int?>("select id from modules limit 1");
+
+            if (!id.HasValue)
+            {
+                var modules = new List<Module> {
+                     new Module("Docker","https://portal.code.education/lms/#/180/163/110/conteudos"),
+                     new Module("Fundamentos de Arquitetura de Software","https://portal.code.education/lms/#/180/163/112/conteudos"),
+                     new Module("Comunicação","https://portal.code.education/lms/#/180/163/116/conteudos"),
+                     new Module("RabbitMQ","https://portal.code.education/lms/#/180/163/102/conteudos"),
+                     new Module("Autenticação e Keycloak","https://portal.code.education/lms/#/180/163/108/conteudos"),
+                     new Module("DDD e Arquitetura hexagonal","https://portal.code.education/lms/#/180/163/123/conteudos"),
+                     new Module("Arquitetura do projeto prático - Codeflix","https://portal.code.education/lms/#/180/163/124/conteudos"),
+                };
+
+                await connection.InsertAsync(modules);
+            }
+        }
+
+        private async Task CreateDatabase(MySqlConnection connection)
+        {
+            var createtablequery = @"create table IF NOT EXISTS modules(
+    id int not null auto_increment,
+    name nvarchar(256) collate utf8_unicode_ci,
+    url nvarchar(500),
+    primary key(id)
+);";
+            await connection.ExecuteAsync(createtablequery);
+
         }
     }
 }
