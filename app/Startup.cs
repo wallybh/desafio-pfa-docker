@@ -55,40 +55,8 @@ namespace desafio_docker
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            SeedDatabase();
         }
-
-        public async void SeedDatabase()
-        {
-            
-            
-            using (var connection = Connection.GetConnection())
-            {
-                await CreateDatabase(connection);
-                await SeedModules(connection);
-            }
-        }
-
-        private async Task SeedModules(MySqlConnection connection)
-        {
-            var id = await connection.QueryFirstOrDefaultAsync<int?>("select id from modules limit 1");
-
-            if (!id.HasValue)
-            {
-                var modules = new List<Module> {
-                     new Module("Docker","https://portal.code.education/lms/#/180/163/110/conteudos"),
-                     new Module("Fundamentos de Arquitetura de Software","https://portal.code.education/lms/#/180/163/112/conteudos"),
-                     new Module("Comunicação","https://portal.code.education/lms/#/180/163/116/conteudos"),
-                     new Module("RabbitMQ","https://portal.code.education/lms/#/180/163/102/conteudos"),
-                     new Module("Autenticação e Keycloak","https://portal.code.education/lms/#/180/163/108/conteudos"),
-                     new Module("DDD e Arquitetura hexagonal","https://portal.code.education/lms/#/180/163/123/conteudos"),
-                     new Module("Arquitetura do projeto prático - Codeflix","https://portal.code.education/lms/#/180/163/124/conteudos"),
-                };
-
-                await connection.InsertAsync(modules);
-            }
-        }
-
+        
         private async Task CreateDatabase(MySqlConnection connection)
         {
             var createtablequery = @"create table IF NOT EXISTS modules(

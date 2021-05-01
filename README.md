@@ -2,16 +2,11 @@
 
 Esse programa deve listar os módulo do curso *Ful Cycle* trazidos de um banco de dados MySQL. A aplicação foi feita pensando em ser executada em um ambiente docker. Também faz parte da aplicação a imagem nginx quer irá trabalhar como servidor proxy reverso, apontando para o container da aplicação.
 
+A aplicação agora poderá ser executada utilizando o docker compose.
+
 ## Executando a aplicação no docker:
 
-1. Crie uma rede do tipo bridge:
-    > docker network create --driver=bridge desafio-pfa-docker
-2. Crie o container para o banco de dados:
-    > docker run -d --rm -e "MYSQL_ALLOW_EMPTY_PASSWORD=true" -e "MYSQL_DATABASE=desafio_pfa_docker" --network desafio-pfa-docker --name desafio-pfa-db mysql:8.0
-3. Crie o container para a aplicação:
-    > docker run -d --rm --network desafio-pfa-docker -e "MYSQL_SERVER=desafio-pfa-db" --name desafio-pfa-web wrst/desafio-pfa-docker-web
-4. Crie o container para o nginx:
-    > docker run -d --rm --network desafio-pfa-docker --name desafio-pfa-nginx -p 8080:80 wrst/desafio-pfa-docker-nginx
+> docker-compose up -d
 
 As variáveis de ambiente utilizadas aqui são para um ambiente simples focado em uma execução rápida. Consulte as possibilidades de customização das [variáveis de ambientes](#aplicação-variáveis-de-ambiente) definidas abaixo.
 
