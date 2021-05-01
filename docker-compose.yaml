@@ -9,6 +9,8 @@ services:
         environment: 
             - MYSQL_DATABASE
             - MYSQL_ALLOW_EMPTY_PASSWORD
+        networks: 
+            - desafio-pfa-docker-back
     dev:
         image: mcr.microsoft.com/dotnet/sdk:5.0
         working_dir: /app
@@ -23,6 +25,9 @@ services:
             context: ./app
         depends_on: 
             - db
+        networks: 
+            - desafio-pfa-docker-back
+            - desafio-pfa-docker-front
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost"]
             interval: 10s
@@ -34,7 +39,17 @@ services:
             context: ./nginx
         ports: 
             - 8000:80
+            - 8080:80
+        networks: 
+            - desafio-pfa-docker-front
         depends_on: 
             web:
                 condition: "service_healthy"
           
+networks: 
+    desafio-pfa-docker-back:
+        driver: 
+            bridge
+    desafio-pfa-docker-front:
+        driver: 
+            bridge
