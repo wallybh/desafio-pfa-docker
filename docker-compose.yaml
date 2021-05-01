@@ -18,5 +18,10 @@ services:
             - db
         profiles:
             - dev
-
-        #docker run -it --rm -p 8080:5000 -v $(pwd)/app:/app --network bridge mcr.microsoft.com/dotnet/sdk:5.0 bash
+    web:
+        build: 
+            context: ./app
+        ports:
+            - 8080:80
+        depends_on: 
+            - db
