@@ -1,3 +1,4 @@
+SET NAMES 'utf8';
 create table IF NOT EXISTS modules(
     id int not null auto_increment,
     name nvarchar(256) collate utf8_unicode_ci,

@@ -21,7 +21,20 @@ services:
     web:
         build: 
             context: ./app
-        ports:
-            - 8080:80
         depends_on: 
             - db
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost"]
+            interval: 10s
+            timeout: 10s
+            retries: 3
+            start_period: 5s
+    nginx:
+        build: 
+            context: ./nginx
+        ports: 
+            - 8000:80
+        depends_on: 
+            web:
+                condition: "service_healthy"
+          
