@@ -5,7 +5,7 @@ namespace desafio_docker
 {
     public static class Connection
     {
-        private static readonly string server = Environment.GetEnvironmentVariable("MYSQL_SERVER") ?? "localhost";
+        private static readonly string server = Environment.GetEnvironmentVariable("MYSQL_SERVER") ?? "db";
         private static readonly string port = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3306";
         private static readonly string database = Environment.GetEnvironmentVariable("MYSQL_DB") ?? "desafio_pfa_docker";
         private static readonly string user = Environment.GetEnvironmentVariable("MYSQL_USER") ?? "root";

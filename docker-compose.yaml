@@ -9,4 +9,14 @@ services:
         environment: 
             - MYSQL_DATABASE
             - MYSQL_ALLOW_EMPTY_PASSWORD
-            
+    dev:
+        image: mcr.microsoft.com/dotnet/sdk:5.0
+        working_dir: /app
+        volumes:
+            - ./app:/app
+        depends_on: 
+            - db
+        profiles:
+            - dev
+
+        #docker run -it --rm -p 8080:5000 -v $(pwd)/app:/app --network bridge mcr.microsoft.com/dotnet/sdk:5.0 bash
