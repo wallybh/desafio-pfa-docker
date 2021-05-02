@@ -30,10 +30,10 @@ services:
             - desafio-pfa-docker-front
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost"]
-            interval: 10s
-            timeout: 10s
-            retries: 3
-            start_period: 5s
+            interval: 30s
+            timeout: 20s
+            retries: 6
+            start_period: 10s
     nginx:
         build: 
             context: ./nginx
